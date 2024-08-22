@@ -16,7 +16,6 @@ module display (
 
     /*** DO NOT MODIFY THE CODE ABOVE ***/
 
-    //TODO
     always_comb begin : double_dabble_fsm_next_state_logic
         case (current_state)
             Shift:      next_state = (count == 10) ? Result: Add3; // After 11 iterations, exit out of the loop

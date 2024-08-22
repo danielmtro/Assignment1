@@ -1,13 +1,13 @@
 module top_level #(
-	MAX_MS = 2047,
+	parameter MAX_MS=2047
 )(
-	input 	KEY0,
+	input 	[3:0]KEY,
 	input 	CLOCK2_50,
-	output	LEDR0,
-	output 	[6:0]  RN15,
-	output 	[6:0]  RN14,
-	output 	[6:0]  RN13,
-	output 	[6:0]  RN12,
+	output	[17:0] LEDR,
+	output 	[6:0]  HEX0,
+	output 	[6:0]  HEX1,
+	output 	[6:0]  HEX2,
+	output 	[6:0]  HEX3
 );
 
 
@@ -26,12 +26,12 @@ module top_level #(
 
 
 	debounce debouncer (.clk(CLOCK2_50),
-						.button(KEY0),
+						.button(KEY[0]),
 						.button_pressed(button_pressed));
 
 
 	rng rng_module (.clk(CLOCK2_50),
-					.random_value(random_value));
+						 .random_value(random_value));
 
 
 	reaction_time_fsm fsm (.clk(CLOCK2_50),
@@ -40,15 +40,15 @@ module top_level #(
 						   .reset(reset),
 						   .up(up),
 						   .enable(enable),
-						   .led_on(LEDR0));
+						   .led_on(LEDR[0]));
 
 
 	display display_0 (.clk(CLOCK2_50),
 					   .value(timer_value),
-					   .display0(RN15),
-					   .display1(RN14),
-					   .display2(RN13),
-					   .display3(RN12));
+					   .display0(HEX0),
+					   .display1(HEX1),
+					   .display2(HEX2),
+					   .display3(HEX3));
 
 
 endmodule

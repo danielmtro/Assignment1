@@ -19,13 +19,7 @@ module rng #(
     //    Make sure to shift left from bit 1 (LSB) towards bit 10 (MSB).
 
     always @(posedge clk) begin
-        
-        // Loop through the 10 bits 
-        for(int i=10; i > 1; i = i - 1)begin
-            lfsr[i] <= lfsr[i - 1];
-        end
-    
-        lfsr[1] <= feedback;
+        lfsr <= {lfsr[9:1], feedback}; // Shift left and insert feedback at LSB
     end
     // Assign random_value to your LSFR output + OFFSET to acheive the range 200 to 1223. Use continuous assign!
 
