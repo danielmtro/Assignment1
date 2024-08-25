@@ -1,3 +1,8 @@
+""""
+I know this isn't necessary but fuck it
+
+"""
+
 from math import comb
 
 num_LED = 16
