@@ -1,16 +1,18 @@
-module rng #(
-    parameter OFFSET=150,
+module rng_mole #(
+    parameter OFFSET=300,
+    parameter LVL_OFFSET = 100,
     parameter MAX_VALUE=1223,
     parameter SEED= 483/*Fill-In*/ // Choose a random number seed here!
 ) (
     input clk,
-    input level,
-    output [$clog2(MAX_VALUE)-1:0] random_value // 11-bits for values 200 to 1223.
+    input [1:0] level,
+    output reg [$clog2(MAX_VALUE)-1:0] random_value // 11-bits for values 200 to 1223.
 );
 
     // Level incrementer to have levels staged between 1 - 4
     wire lvl_adder = level + 1;  
-    wire [10:1] netOffset = OFFSET * lvl_adder;
+    wire [$clog2(MAX_VALUE)-1:0]init;
+    reg [$clog2(MAX_VALUE)-1:0]temp_value;
 
     reg [10:1] lfsr; // The 10-bit Linear Feedback Shift Register. Note the 10 down-to 1. (No bit-0, we count from 1 in this case!)
 
@@ -27,7 +29,28 @@ module rng #(
     always @(posedge clk) begin
         lfsr <= {lfsr[9:1], feedback}; // Shift left and insert feedback at LSB
     end
+
     // Assign random_value to your LSFR output + OFFSET to acheive the range 200 to 1223. Use continuous assign!
-    
-    assign random_value = lfsr + netOffset;
+    assign init = lfsr + OFFSET;
+
+    // Generate the control for scaling the random number based on level
+    always @(posedge clk)begin
+
+        case(level)
+
+            2'b00 : temp_value <= init;                 // (300, 1223)
+            2'b01 : temp_value <= {1'b0, init[9:1]};    // (250, 711)
+            2'b10 : temp_value <= {2'b00, init[9:2]};   // (175, 405)
+            2'b11 : temp_value <= {3'b000, init[9:3]};  // (137, 252)
+            default: temp_value <= init;
+        endcase
+	 end
+
+    // Asssign the output
+	 always @(posedge clk) begin
+		random_value <= temp_value + LVL_OFFSET;
+    end
+
+
+
 endmodule
