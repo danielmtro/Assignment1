@@ -8,6 +8,18 @@ module rng_mole #(
     input [1:0] level,
     output reg [$clog2(MAX_VALUE)-1:0] random_value // 11-bits for values 200 to 1223.
 );
+    /*
+    RNG mole generation logic that will control how long a mole should be up/down for.
+
+    Works as follows:
+
+    We generate an random number in range (OFFSET, MAX_VALUE) (call this init)
+    We output the following
+    if level = 0:  init
+    if level = 1: init/2 + LVL_OFFSET
+    if level = 2: init/4 + LVL_OFFSET
+    if level = 3: init/8 + LVL_OFFSET
+    */
 
     // Level incrementer to have levels staged between 1 - 4
     wire lvl_adder = level + 1;  
