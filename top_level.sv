@@ -10,6 +10,8 @@ module top_level #(
 	output 	[6:0]  HEX3
 );
 
+	logic clk;
+	assign clk = CLOCK2_50;
 
 	logic button_pressed;
 	logic reset, up, enable;
