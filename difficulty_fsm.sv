@@ -2,7 +2,7 @@ module difficulty_fsm(
     input           clk,
     input           increment,
     output logic    level
-)
+);
 
     // Edge detection block here!
     logic button_q0, button_edge;
@@ -10,7 +10,7 @@ module difficulty_fsm(
         button_q0 <= increment;
     end : edge_detect
 
-    assign button_edge = (button_pressed > button_q0);
+    assign button_edge = (increment > button_q0);
 
     // State teypedef enum used here
     typedef enum logic [1:0] {LVL1, LVL2, LVL3, LVL4} state_type;
@@ -38,7 +38,7 @@ module difficulty_fsm(
     end
 
     // always_ff for FSM state variable flip_flops
-    always_ff(@posedge clk) begin
+    always_ff @(posedge clk) begin
         current_state <= next_state;
     end
 

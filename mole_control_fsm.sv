@@ -1,4 +1,4 @@
-module difficulty_fsm #(
+module mole_control_fsm #(
     parameter MAX_MS=2047  
 )(
     input                             clk,
@@ -7,7 +7,7 @@ module difficulty_fsm #(
     output logic                      up,
     output logic                      enable,
     output logic                      led_on
-)
+);
 
 
     // State teypedef enum used here
@@ -24,7 +24,7 @@ module difficulty_fsm #(
                 next_state = LED_OFF;
             end
             LED_OFF: begin
-                next_state = (reset == 1'b1) ? LVL3 : LED_OFF;
+                next_state = (reset == 1'b1) ? RESET_1 : LED_OFF;
             end
             RESET_1: begin
                 next_state = LED_ON;
@@ -36,7 +36,7 @@ module difficulty_fsm #(
     end
 
     // always_ff for FSM state variable flip_flops
-    always_ff(@posedge clk) begin
+    always_ff @(posedge clk) begin
         current_state <= next_state;
     end
 
