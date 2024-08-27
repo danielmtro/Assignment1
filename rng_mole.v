@@ -46,6 +46,7 @@ module rng_mole #(
     assign init = lfsr + OFFSET;
 
     // Generate the control for scaling the random number based on level
+    // TO-do try changing this from a concatenation operator to a bit-shift operator
     always @(posedge clk)begin
 
         case(level)

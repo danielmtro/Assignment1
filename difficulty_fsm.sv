@@ -1,7 +1,7 @@
 module difficulty_fsm(
-    input           clk,
-    input           increment,
-    output logic    level
+    input           		  clk,
+    input           		  increment,
+    output logic [1:0]    level
 );
 
     // Edge detection block here!
