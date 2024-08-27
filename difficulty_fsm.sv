@@ -4,7 +4,7 @@ module difficulty_fsm(
     output logic [1:0]    level
 );
 
-    intial level = 0;
+//    intial level = 2'b00;
 
     // Edge detection block here!
     logic button_q0, button_edge;

@@ -1,4 +1,4 @@
-module LED_randomiser#(
+module MultiLedRandomiser#(
     parameter PROBABILITY=10
 )(
     input           		  enable,
@@ -10,11 +10,11 @@ module LED_randomiser#(
     genvar i;
     generate
         
-        for(i = 0; i < 18; i++) begin
+        for(i = 0; i < 18; i++) begin : generateRandomisers
             LED_randomiser #(.PROBABILITY(PROBABILITY)) randomiser ( .clk(clk),
                                         .enable(enable),
                                         .LEDR(LEDR[i]));
-        end
+        end : generateRandomisers
     endgenerate
 
 endmodule

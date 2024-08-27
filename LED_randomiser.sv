@@ -3,7 +3,7 @@ module LED_randomiser#(
 )(
     input           		  enable,
     input                     clk,
-    output logic              LEDR
+    output logic              led
 );
     /*
     Module takes in a signal (on) which tells whether or not the LED should be on.
@@ -20,7 +20,7 @@ module LED_randomiser#(
     assign LED_Change = (enable > on_q0);
 
     // Create the random number here
-    rng random_module (.clk(clk), random_value(random_value))
+    rng random_module (.clk(clk), .random_value(random_value));
 
     always_ff @(posedge clk) begin
 
@@ -28,12 +28,12 @@ module LED_randomiser#(
 
             // Only update if the LED change has occured
             if (LED_Change) begin
-                LEDR <= (random_value%10 == 0) ? 1'b1 : 1'b0;
+                led <= (random_value%10 == 0) ? 1'b1 : 1'b0;
             end
 
         end
         else begin
-            LEDR <= 1'b0;
+            led <= 1'b0;
         end
 
     end
