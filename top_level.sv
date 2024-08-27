@@ -1,4 +1,4 @@
-module top_level_mole_generation#(
+module top_level #(
 	parameter MAX_MS=2047
 )(
 	input 	[3:0]KEY,

@@ -1,4 +1,4 @@
-module top_level #(
+module top_level_mole_generation #(
 	parameter MAX_MS=2047
 )(
 	input 	CLOCK2_50,
@@ -14,7 +14,7 @@ module top_level #(
     logic reset, up, enable;
 	logic [$clog2(MAX_MS)-1:0] timer_value;
 	logic [$clog2(MAX_MS)-1:0] random_value;
-    logic [1:0] level;
+   logic [1:0] level;
 
     assign level = 2'b00;
 
