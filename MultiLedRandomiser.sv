@@ -3,7 +3,7 @@ module MultiLedRandomiser#(
 )(
     input           		  enable,
     input                     clk,
-    output logic        [17:0]LEDR
+    output logic        [17:0]ledr
 );
 
     // Create a bunch of LED randomisers for each mole
@@ -13,7 +13,7 @@ module MultiLedRandomiser#(
         for(i = 0; i < 18; i++) begin : generateRandomisers
             LED_randomiser #(.PROBABILITY(PROBABILITY)) randomiser ( .clk(clk),
                                         .enable(enable),
-                                        .LEDR(LEDR[i]));
+                                        .led(ledr[i]));
         end : generateRandomisers
     endgenerate
 

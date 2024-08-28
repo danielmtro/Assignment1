@@ -7,19 +7,19 @@ module MultiLedRandomiser_tb;
     reg  enable; 
 
     // Outputs from the DUT
-    wire led; // 1 bit output 
+    wire [17:0]ledr; // 18 bit output for all the LED's
 	 
-	real led_on_percentage;
-	integer led_on_count = 0;
-	integer total_cycles = 1000; // Number of cycles to test
+	integer number_of_led_on = 0;
+	integer total_cycles = 100; // Number of cycles to test
+    integer num_led = 18;
 
     // Instantiate the rng module with specific parameters
-    LED_randomiser #(
+    MultiLedRandomiser #(
         .PROBABILITY(10)
     ) dut (
         .enable(enable),
         .clk(clk),
-        .led(led));
+        .ledr(ledr));
 
     // Clock generation
     initial begin
@@ -44,34 +44,39 @@ module MultiLedRandomiser_tb;
         // Test case 1: enable is low, LEDR should be low
         enable = 0;
         #20;
-		  $display("led value when enable is low: %b", led);
+		  $display("led values when enable is low: %b", ledr);
 
         // Test case 2: enable is high, LEDR should be high 10% of the time
         enable = 1;
         #20; // Run for a longer time to observe the behavior
         // Note: Since the output is random, we can't assert a specific value here.
         // Instead, we can print the value of LEDR to observe its behavior.
-        $display("led value when enable is high: %b", led);
+        $display("led values when enable is high: %b", ledr);
 
 
         // Test case: Toggle enable and observe LEDR
-
-
+        #10;
+        $display("Beginning automated tests")
+    
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
 
-            if (enable && led) begin
-                led_on_count++;
-            end
+            led_on_count = 0;
+            for (int j = 0; j < num_led; j++) begin: count_led_on
+
+                if (enable && ledr[i]) begin
+                    led_on_count++;
+                end
+
+            end : count_led_on
+
+            $display("Number of LED on $d", led_on_count)
         end: looping_section
 
-        // Calculate the percentage of time LEDR is on when enable is high
-        led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
-        $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
 
         // Run the simulation for a specified time
-        #1000 $finish();
+        #10 $finish();
     end
 
 endmodule
