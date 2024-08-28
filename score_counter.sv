@@ -27,6 +27,9 @@ module score_counter #(
         else if(mole_hit) begin
             score <= score + 1;  // increment the score
             end
+        else begin
+            count <= count;
+        end 
     end
 
 
