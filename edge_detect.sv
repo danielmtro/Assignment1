@@ -3,7 +3,8 @@ When the nth bit of a value is changed, this module returns a value
 who's nth bit has a value of 1 and all other bits have a value of 0.
 
 Limitations. 2 clock cycles must be allowed at the beginning of a 
-program for the module to recognise the initial state of the given value
+program for the module to recognise the initial state of the given value.
+Rising and falling edges are detected here.
 
 The nth bit sets to 1 at the first rising edge. It returns to 0
 after 1 full clock period
