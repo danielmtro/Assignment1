@@ -1,4 +1,4 @@
-module name #() (
+module edge_detect (
     input clk,
     input[17:0] SW_pressed,
 
