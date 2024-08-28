@@ -8,13 +8,14 @@ module game_logic_tb;
     logic     point_1; // Outputs as wire data type (as they are assigned by the DUT)
 
     reg clk;  // Clock signal for sequential logic
-
+	logic [17:0] mole_hit_test;
     // Step 2: Instantiate Device Under Test:
     game_logic DUT(
 			.clk(clk),// Instantiate the 'Device Under Test' (DUT), an instanceof the game_logic module.
         .SW_pressed(SW_pressed), 
 		  .ledr(ledr), // Connect inputs to their respective testbench variables.
-        .point_1(point_1)  // Connect outputs to their respective testbench variables.
+        .point_1(point_1),
+			.mole_hit(mole_hit_test)// Connect outputs to their respective testbench variables.
     );
     // ^^^ Connects ports of the instantiated module to variables in this module with the same port/variable name.
 
@@ -34,25 +35,52 @@ module game_logic_tb;
         $dumpfile("waveform.vcd");  // Tell the simulator to dump variables into the 'waveform.vcd' file during the simulation. Required to produce a waveform .vcd file.
         $dumpvars();                // Also required to tell simulator to dump variables into a waveform (with filename specified above).
 
-        //test case 1: ledr is 00000000000100000 and we oscilate over 1 clock cycle to have the SW pressed be the same.
-        //Observe output
+        //test case 1: ledr is 00000000000100000 and the user pushes the correct button
+		  //this triggers a point to be won. 
 
 		 
         #60;
-        ledr = 18'b00000000000100000;
+        ledr = 18'b00000000000100000; 			//an LED turns on
 		  #60;
-        SW_pressed = 18'b000000000000000000;
+        SW_pressed = 18'b000000000000000000; //the user is yet to react 
         #20; 
-        SW_pressed  = 18'b00000000000100000;
-        #5;
-		  $display("Mole hit value when button switched: %b", point_1);
-        #16;
-        $display("Mole hit value when after 1 clk cycle: %b", point_1);
-//        SW_pressed = 000000000000000000;
-		  #50;
-        $display("Mole hit value after waiting some time: %b", point_1);
-
-
+        SW_pressed  = 18'b00000000000100000; //the user whacks the correct mole
+		  #40;
+		  ledr = 18'b000000000000000000; 		//the active LED turns off
+		  //end of test case 1
+		  
+		  #30 //viewing time
+		  SW_pressed = 18'b000000000000000000; //switches reset to all off 
+			#30
+			//test case 2. The user presses the incorrect button. There is still only 1 led on
+		
+			ledr = 18'b0000000000100000; 			//an LED turns on
+			#20;
+			SW_pressed = 18'b00010000000000000; //the user hits the incorrect mole
+			#40; 											//viewing time
+			//end test case 2
+			
+			ledr = 18'b0000000000000000;			//reset LEDs to off
+			SW_pressed = 18'b0000000000000000;	//reset switches to off
+			
+			#40;
+			
+			//test case 3.1: there are several LEDs on and the user interacts with 1 of them 
+			//correctly
+			ledr = 18'b0010001000100000; 			//more leds turn on
+			#20;
+			SW_pressed = 18'b0000000000100000; 	//user whacks 1 mole
+			#40;
+			ledr = 18'b0010001000000000;			//mole which was hit is killed. LED turns off
+			#30;											//viewing time
+			//end test case 3.1
+			
+			//test case 3.2: the user then interacts with the second led correctly
+			
+			SW_pressed = 18'b0010000000100000; 	//user hits a second mole
+			#40;
+			ledr  = 18'b0000001000000000; 		//mole dies, LED turns off
+			#30;											//viewing time
 
         
 
