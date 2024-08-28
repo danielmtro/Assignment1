@@ -9,7 +9,7 @@ module MultiLedRandomiser_tb;
     // Outputs from the DUT
     wire [17:0]ledr; // 18 bit output for all the LED's
 	 
-	integer number_of_led_on = 0;
+	integer led_on_count = 0;
 	integer total_cycles = 100; // Number of cycles to test
     integer num_led = 18;
 
@@ -56,7 +56,7 @@ module MultiLedRandomiser_tb;
 
         // Test case: Toggle enable and observe LEDR
         #10;
-        $display("Beginning automated tests")
+        $display("Beginning automated tests");
     
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
@@ -71,7 +71,9 @@ module MultiLedRandomiser_tb;
 
             end : count_led_on
 
-            $display("Number of LED on $d", led_on_count)
+            $display("Number of LED on %d", led_on_count);
+				$display("Current value stored in LED %b", ledr);
+	
         end: looping_section
 
 
