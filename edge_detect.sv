@@ -20,6 +20,7 @@ module edge_detect #(
     logic[NUM_BITS - 1:0] button_current;
     logic [NUM_BITS - 1:0] button_prev;
 
+	 
     always_ff @(posedge clk) begin : edge_detect
         button_current <= SW_pressed;
         button_prev <= button_current;        
