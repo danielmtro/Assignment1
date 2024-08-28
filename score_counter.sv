@@ -4,9 +4,9 @@ module score_counter #(
     input                           clk,
     input                           restart,
     input                           mole_hit,
-    output                    [10:0]score,
+    output      [$clog2(MAX_MS)-1:0]score
 );
-
+    initial score = 0; // initalise score as 0 to avoid any errors during runtime
     /*
     Module takes in 2 inputs
     
@@ -21,14 +21,14 @@ module score_counter #(
     // always ff block updates the score every clock cycle if we hit a mole
     always_ff @(posedge clk) begin
 
-        if(restart) begin
-            score <= 0;     // set the score to zero if a restart is triggered
+        if(restart || score > MAX_SCORE-1) begin
+            score <= 0;     // set the score to zero if a restart is triggered or max score is reached
         end
         else if(mole_hit) begin
             score <= score + 1;  // increment the score
             end
         else begin
-            count <= count;
+            score <= score;
         end 
     end
 
