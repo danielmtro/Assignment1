@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module LED_randomiser_tb;
+module MultiLedRandomiser_tb;
 
     // Inputs to the DUT (Device Under Test)
     reg clk;
