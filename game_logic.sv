@@ -4,6 +4,9 @@ This computes the games logic to decide whether a user has scored a point or not
 Limitations: after a button is switched, it takes 2 clock cycles for it to 
 process this through to a point being gained.
 
+Limitation: if an LED change happens withing 2 clock cycles of a SW change, the player 
+may receive a bonus point
+
 The output is a logical value describing whether there was a successful hit
 */
 

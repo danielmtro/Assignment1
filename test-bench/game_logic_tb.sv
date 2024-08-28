@@ -63,7 +63,7 @@ module game_logic_tb;
 			ledr = 18'b0000000000000000;			//reset LEDs to off
 			SW_pressed = 18'b0000000000000000;	//reset switches to off
 			
-			#40;
+			#40;											//changing LED's happened too close to 
 			
 			//test case 3.1: there are several LEDs on and the user interacts with 1 of them 
 			//correctly
