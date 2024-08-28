@@ -1,5 +1,6 @@
 module LED_randomiser#(
-    parameter PROBABILITY=10
+    parameter PROBABILITY=10,
+    parameter SEED=1
 )(
     input           		  enable,
     input                     clk,
@@ -20,7 +21,10 @@ module LED_randomiser#(
     assign LED_Change = (enable > on_q0);
 
     // Create the random number here
-    rng random_module (.clk(clk), .random_value(random_value));
+    rng #(.SEED(SEED)) random_module (
+        .clk(clk), 
+        .random_value(random_value)
+    );
 
     always_ff @(posedge clk) begin
 

@@ -11,9 +11,10 @@ module MultiLedRandomiser#(
     generate
         
         for(i = 0; i < 18; i++) begin : generateRandomisers
-            LED_randomiser #(.PROBABILITY(PROBABILITY)) randomiser ( .clk(clk),
-                                        .enable(enable),
-                                        .led(ledr[i]));
+            LED_randomiser #(.PROBABILITY(PROBABILITY),
+                             .SEED(i)) randomiser ( .clk(clk),
+                                                    .enable(enable),
+                                                    .led(ledr[i]));
         end : generateRandomisers
     endgenerate
 
