@@ -54,13 +54,13 @@ module top_level_mole_generation #(
     );
 	
 	
-	// Module for displaying the timer
+	// Module for displaying the timer for debugging
 	display display_0 (.clk(CLOCK2_50),
-					   .value(timer_value),
-					   .display0(HEX0),
-					   .display1(HEX1),
-					   .display2(HEX2),
-					   .display3(HEX3));
+							.value(timer_value),
+							.display0(HEX0),
+							.display1(HEX1),
+							.display2(HEX2),
+							.display3(HEX3));
 						
 	// Module for dislaying the level
 	seven_seg sseg (.bcd(segment_level),

@@ -33,8 +33,12 @@ module top_level #(
 
     // variable for determining if a mole shoud be up
     logic activate_mole;
-	
 
+    // variable for determining if a mole was successfully hit
+    logic increase_point;
+
+    // variable for holding the current score;
+    logic [10:0] score;
 	
 
     //
@@ -48,15 +52,15 @@ module top_level #(
     genvar i;
     generate
 
-        for(i=0; i<18; i++) begin 
+        for(i=0; i<18; i++) begin  : debounce_switches
             debounce d_i (.clk(CLOCK2_50),
                           .button(SW[i]),
                           .button_pressed(switches[i]));
-        end 
+        end : debounce_switches
     endgenerate
 
     // debounce the start/restart module
-    debounce d2 (.ck(CLOCK2_50),
+    debounce d2 (.clk(CLOCK2_50),
                  .button(KEY[0]),
                  .button_pressed(restart));
 
@@ -110,6 +114,29 @@ module top_level #(
     - Connect Hit and restart to the Calc_score module
     - Connect the score to a display module
     */		 
+    game_logic g_logic (
+        .clk(CLOCK2_50),
+        .SW_pressed(switches),
+        .ledr(LEDR),
+        .point_1(increase_point)
+    );
+
+    score_counter score_count (
+        .clk(CLOCK2_50),
+        .restart(restart),
+        .mole_hit(increase_point),
+        .score(score)
+    );
+
+    display display_0 (
+        .clk(CLOCK2_50),
+        .value(score),
+        .display0(HEX0),
+        .display1(HEX1),
+        .display2(HEX2),
+        .display3(HEX3)
+    );
+
 
 
 endmodule

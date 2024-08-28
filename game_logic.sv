@@ -16,11 +16,10 @@ module game_logic(
     input reg [17:0] ledr,
 
     output logic point_1,
-	 output logic [17:0] mole_hit
-	 
     //if SW_prev XOR SW_new (SW[x]) has a mole on it    
 );
     logic [17:0] SW_edge_det;
+    logic [17:0] mole_hit;
     initial SW_edge_det = 0;
 	 
 //	 initial point_1 = 0;
