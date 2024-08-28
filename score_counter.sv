@@ -4,7 +4,7 @@ module score_counter #(
     input                           clk,
     input                           restart,
     input                           mole_hit,
-    output      [$clog2(MAX_MS)-1:0]score
+    output      [$clog2(MAX_SCORE)-1:0]score
 );
     initial score = 0; // initalise score as 0 to avoid any errors during runtime
     /*
