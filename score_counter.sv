@@ -3,7 +3,7 @@ module score_counter #(
 )(
     input                           clk,
     input                           restart,
-    input                           mole_hit,
+    input                           increase_score,
     output      [$clog2(MAX_SCORE)-1:0]score
 );
     initial score = 0; // initalise score as 0 to avoid any errors during runtime
@@ -11,7 +11,7 @@ module score_counter #(
     Module takes in 2 inputs
     
     @param: restart - whether the button has been pressed to zero the score
-    @param: mole_hit - Should the score be incremented
+    @param: increase_score - Should the score be incremented
 
     output - a score (should be 4 digits in decimal or 10 bits of binary)
 
@@ -24,7 +24,7 @@ module score_counter #(
         if(restart) begin
             score <= 0;     // set the score to zero if a restart is triggered or max score is reached
         end
-        else if(mole_hit) begin
+        else if(increase_score) begin
             score <= score + 1;  // increment the score
             end
         else begin
