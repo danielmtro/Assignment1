@@ -29,7 +29,7 @@ module top_level #(
     logic [17:0] switches;
 
     // variable for restarting the game
-    logic restart;
+    logic restart, restart_pressed;
 
     // variable for determining if a mole shoud be up
     logic activate_mole;
@@ -63,6 +63,9 @@ module top_level #(
     debounce d2 (.clk(CLOCK2_50),
                  .button(KEY[0]),
                  .button_pressed(restart));
+
+    // connect the start/restart signal to a posedge detection
+    posedge_detection pos (.clk(CLOCK2_50), .button(restart), .button_edge(level_button_pressed));
 
     // connect the increment signal to a posedge detection
     posedge_detection pos (.clk(CLOCK2_50), .button(increment), .button_edge(level_button_pressed));
@@ -125,7 +128,7 @@ module top_level #(
 
     score_counter score_count (
         .clk(CLOCK2_50),
-        .restart(restart),
+        .restart(restart_pressed),
         .mole_hit(increase_point),
         .score(score)
     );
