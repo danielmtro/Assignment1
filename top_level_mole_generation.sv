@@ -16,7 +16,7 @@ module top_level_mole_generation #(
     logic reset, up, enable;
 	logic [$clog2(MAX_MS)-1:0] timer_value;
 	logic [$clog2(MAX_MS)-1:0] random_value;
-   logic [1:0] level;
+   	logic [1:0] level;
 	logic [6:0] segment_level;
 	
 	always_comb begin
@@ -26,8 +26,8 @@ module top_level_mole_generation #(
 	
 	// Difficulty fsm module
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
-										.increment(KEY[0]),
-										.level(level));
+							  .increment(KEY[0]),
+							  .level(level));
 		
 	// RNG module scaled by difficulty
    rng_mole rng_module (.clk(CLOCK2_50),

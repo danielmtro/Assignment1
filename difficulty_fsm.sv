@@ -6,7 +6,7 @@ module difficulty_fsm(
 
 //    intial level = 2'b00;
 
-    // Edge detection block here!
+    // Rising edge detection block here!
     logic button_q0, button_edge;
     always_ff @(posedge clk) begin : edge_detect
         button_q0 <= increment;
