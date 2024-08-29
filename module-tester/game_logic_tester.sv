@@ -19,11 +19,10 @@ module game_logic_tester	(
 	
 	logic point_1;
 	
-	logic [17:0] ledr_current;
+	logic [17:0] input_num;
 	logic [17:0] ledr_next;
-	initial ledr_current = 18'b010000100001000100;
+	assign input_num = 18'b010000100001000100;
 	
-	assign LEDR = ledr_current;
 	
 	 genvar i;
     generate
@@ -36,10 +35,10 @@ module game_logic_tester	(
         end : debounce_switches
     endgenerate
 	 
-	 always_ff @(posedge clk) begin
-		ledr_current <= ledr_next;
-		
-	 end
+	 //note for usage!!
+//	 always_ff @(posedge clk) begin
+//		ledr_current <= ledr_next;
+//	 end
 	 
 	 
 	 
@@ -52,9 +51,9 @@ module game_logic_tester	(
 								);
 	 game_logic game_logic (	.clk(clk),
 										.SW_pressed(SW_pressed),
-										.ledr_current(ledr_current),
+										.input_num(input_num),
 										.point_1(point_1),
-										.ledr_next(ledr_next)
+										.ledr_real(LEDR)
 									);
 	 
 	 always_ff @(posedge clk) begin
