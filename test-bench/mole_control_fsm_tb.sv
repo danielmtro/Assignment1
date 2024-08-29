@@ -54,7 +54,7 @@ module mole_control_fsm_tb;
         timer = 1;
 
         // Check Reset 1 state
-        #20;
+        #40;
         $display("reset: %d, up: %d, enable: %d, led_on: %d", reset, up, enable, led_on);
         $display("Should be reset: 1, up: 0, enable: 0, led_on: 0", reset, up, enable, led_on);        
         $display("Timer value is: %d", timer_value);
