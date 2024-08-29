@@ -10,7 +10,7 @@ The nth bit sets to 1 at the first rising edge. It returns to 0
 after 1 full clock period
 */
 
-module edge_detect #(
+module edge_detect_posneg #(
 	  parameter NUM_BITS = 18
 	  )(
     input clk,

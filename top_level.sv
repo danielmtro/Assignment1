@@ -65,11 +65,11 @@ module top_level #(
                  .button_pressed(restart));
 
     // connect the increment signal to a posedge detection
-    posedge_detection posedge (.clk(Clock), .button(increment), .button_pressed(level_button_pressed));
+    posedge_detection pos (.clk(CLOCK2_50), .button(increment), .button_edge(level_button_pressed));
 
 	// Difficulty fsm module
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
-                              .increment(increment),
+                              .button_edge(level_button_pressed),
                               .level(level));
 		
 	// RNG module scaled by difficulty
