@@ -1,7 +1,7 @@
 module rng_mole #(
-    parameter OFFSET=300,
-    parameter LVL_OFFSET = 100,
-    parameter MAX_VALUE=1223,
+    parameter OFFSET=600,
+    parameter LVL_OFFSET = 300,
+    parameter MAX_VALUE=2047,
     parameter SEED= 483/*Fill-In*/ // Choose a random number seed here!
 ) (
     input clk,
