@@ -7,13 +7,13 @@ module difficulty_fsm_tb;
     reg increment; 
 
     // Outputs from the DUT
-    wire [1:0] level;
+    reg [1:0] level;
 
     // Instantiate the rng module with specific parameters
     difficulty_fsm dut (
         .clk(clk),
-        .increment(increment)
-        .level(ledr));
+        .increment(increment),
+        .level(level));
 
     // Clock generation
     initial begin
@@ -48,7 +48,7 @@ module difficulty_fsm_tb;
         #30;
         increment = 1;
         #30;
-        $display("Level should now be %d");
+        $display("Level should now be %d", level);
         #30;
 
         #30;
@@ -56,16 +56,16 @@ module difficulty_fsm_tb;
         #30;
         increment = 1;
         #30;
-        $display("Level should now be %d");
+        $display("Level should now be %d", level);
         increment = 0;
         #30;
         increment = 1;
         #30;
-        $display("Level should now be %d");
+        $display("Level should now be %d", level);
         increment = 0;
         #30;
         increment = 1;
-        $display("Level should now be %d");
+        $display("Level should now be %d", level);
 
         // Run the simulation for a specified time
         #10 $finish();
