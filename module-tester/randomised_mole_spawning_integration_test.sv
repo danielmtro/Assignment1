@@ -1,4 +1,13 @@
-module top_level_mole_generation #(
+/*
+Integration test for determining:
+
+- levels work
+- level is displayed
+- timer value is dispalyed
+- LED's generate moles randomly when enabled
+*/
+
+module randomised_mole_spawning_integration_test #(
 	parameter MAX_MS=2047
 )(
 	input 	CLOCK2_50,
@@ -18,12 +27,12 @@ module top_level_mole_generation #(
 	logic [$clog2(MAX_MS)-1:0] random_value;
    	logic [1:0] level;
 	logic [6:0] segment_level;
+    logic led_enable;
 	
 	always_comb begin
 		segment_level = {5'b00000, level};
 	end
-	
-	
+
     logic increment;
     logic level_button_pressed;
 
@@ -39,6 +48,7 @@ module top_level_mole_generation #(
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
                               .button_edge(level_button_pressed),
                               .level(level));
+		
 		
 	// RNG module scaled by difficulty
    rng_mole rng_module (.clk(CLOCK2_50),
@@ -61,9 +71,15 @@ module top_level_mole_generation #(
         .reset(reset),
         .up(up),
         .enable(enable),
-        .led_on(LEDR[0])
+        .led_on(led_enable)
     );
-	
+
+	// Generate the randomised LED's
+    MultiLedRandomiser led_generator(
+        .clk(CLOCK2_50),
+        .enable(led_enable),
+        .ledr(LEDR)
+    );
 	
 	// Module for displaying the timer for debugging
 	display display_0 (.clk(CLOCK2_50),
