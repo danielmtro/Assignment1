@@ -24,7 +24,7 @@ module game_logic(
 	 
 //	 initial point_1 = 0;
 
-    edge_detect u0 ( .clk(clk),
+    edge_detect_posneg u0 ( .clk(clk),
                     .SW_pressed(SW_pressed),
                     .SW_edge_det(SW_edge_det));
 

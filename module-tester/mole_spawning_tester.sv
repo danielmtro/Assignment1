@@ -24,10 +24,21 @@ module top_level_mole_generation #(
 	end
 	
 	
+    logic increment;
+    logic level_button_pressed;
+
+    debounce d0 (.clk(CLOCK2_50),               // Difficulty button debouncer
+                .button(KEY[0]),
+                .button_pressed(increment));
+
+	
+    // connect the increment signal to a posedge detection
+    posedge_detection pos (.clk(CLOCK2_50), .button(increment), .button_edge(level_button_pressed));
+
 	// Difficulty fsm module
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
-							  .increment(KEY[0]),
-							  .level(level));
+                              .button_edge(level_button_pressed),
+                              .level(level));
 		
 	// RNG module scaled by difficulty
    rng_mole rng_module (.clk(CLOCK2_50),
