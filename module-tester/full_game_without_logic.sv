@@ -1,9 +1,9 @@
-module top_level #(
+module full_game_without_logic #(
 	parameter MAX_MS=2047
 )(
 	input 	CLOCK2_50,
 	input	[3:0]  KEY,
-   input   [17:0] SW,
+    input   [17:0] SW,
 	output	[17:0] LEDR,
 	output 	[6:0]  HEX0,
 	output 	[6:0]  HEX1,
@@ -100,11 +100,11 @@ module top_level #(
     );
 
 
-    logic [17:0]input_num;
+//    logic [17:0]input_num;
     // module for generating random leds
     MultiLedRandomiser led_randomiser (.clk(CLOCK2_50),
                                        .enable(activate_mole),
-                                       .ledr(input_num));
+                                       .ledr(LEDR));
 	
 						
 	// Module for dislaying the level
@@ -127,7 +127,7 @@ module top_level #(
     score_counter score_count (
         .clk(CLOCK2_50),
         .restart(restart_pressed),
-        .increase_score(increase_point),
+        .increase_score(level_pressed),
         .score(score)
     );
 

@@ -13,9 +13,9 @@ The output is a logical value describing whether there was a successful hit
 module game_logic(
     input clk,
     input [17:0] SW_pressed,
-    input reg [17:0] input_num,
+    input logic [17:0] input_num,
 
-	 output logic [17:0] ledr_real,
+	output logic [17:0] ledr_real,
     output logic point_1
     //if SW_prev XOR SW_new (SW[x]) has a mole on it    
 );
@@ -24,7 +24,7 @@ module game_logic(
 	 logic [17:0] ledr_current;
 	 logic [17:0] ledr_next;
 	 logic [17:0] previous_input;
-    initial previous_input = 0;
+    // initial previous_input = 0;
 	 
 	 always_ff @(posedge clk) begin
 		previous_input <= input_num;
