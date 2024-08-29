@@ -21,7 +21,7 @@ module score_counter #(
     // always ff block updates the score every clock cycle if we hit a mole
     always_ff @(posedge clk) begin
 
-        if(restart || score > MAX_SCORE-1) begin
+        if(restart) begin
             score <= 0;     // set the score to zero if a restart is triggered or max score is reached
         end
         else if(mole_hit) begin
