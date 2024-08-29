@@ -13,8 +13,9 @@ The output is a logical value describing whether there was a successful hit
 module game_logic(
     input clk,
     input [17:0] SW_pressed,
-    input reg [17:0] ledr,
+    input reg [17:0] ledr_current,
 
+	 output logic [17:0] ledr_next,
     output logic point_1
     //if SW_prev XOR SW_new (SW[x]) has a mole on it    
 );
@@ -28,9 +29,10 @@ module game_logic(
                     .SW_pressed(SW_pressed),
                     .SW_edge_det(SW_edge_det));
 
-//    logic [17:0] mole_hit;
 
-    assign mole_hit = (SW_edge_det & ledr);
+	 //mole hit has a 1 at the bit location where there was a successful
+	 //mole hit
+    assign mole_hit = (SW_edge_det & ledr_current);
 
     always_ff @(posedge clk) begin
 
@@ -41,6 +43,9 @@ module game_logic(
             point_1 <= 0;
         end
     end
+	 
+	 //assign new value to be used by ledr
+	 assign ledr_next = (ledr_current & (~mole_hit));
 
 
 
