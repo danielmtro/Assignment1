@@ -22,7 +22,7 @@ module top_level #(
 	logic [$clog2(MAX_MS)-1:0] random_value;
 
     // Difficulty level variables
-    logic [1:0] increment, level, level_button_pressed;
+    logic [1:0] increment, level, level_pressed;
 	logic [6:0] segment_level;
 
     // switches for mole hitting variables
@@ -65,14 +65,14 @@ module top_level #(
                  .button_pressed(restart));
 
     // connect the start/restart signal to a posedge detection
-    posedge_detection pos1 (.clk(CLOCK2_50), .button(restart), .button_edge(level_button_pressed));
+    posedge_detection pos1 (.clk(CLOCK2_50), .button(restart), .button_edge(restart_pressed));
 
     // connect the increment signal to a posedge detection
-    posedge_detection pos2 (.clk(CLOCK2_50), .button(increment), .button_edge(level_button_pressed));
+    posedge_detection pos2 (.clk(CLOCK2_50), .button(increment), .button_edge(level_pressed));
 
 	// Difficulty fsm module
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
-                              .button_edge(level_button_pressed),
+                              .button_edge(level_pressed),
                               .level(level));
 		
 	// RNG module scaled by difficulty
@@ -113,16 +113,12 @@ module top_level #(
 						 .segments(HEX4));
 
                 
-	/*
-                TO-DO
-    - Connect the LEDR, switches to Game_Logic module
-    - Connect Hit and restart to the Calc_score module
-    - Connect the score to a display module
-    */		 
+
     game_logic g_logic (
         .clk(CLOCK2_50),
         .SW_pressed(switches),
-        .ledr(LEDR),
+        .ledr_current(LEDR),
+        .ledr_next(ledr_next)
         .point_1(increase_point)
     );
 
