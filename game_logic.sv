@@ -15,7 +15,7 @@ module game_logic(
     input [17:0] SW_pressed,
     input reg [17:0] ledr,
 
-    output logic point_1,
+    output logic point_1
     //if SW_prev XOR SW_new (SW[x]) has a mole on it    
 );
     logic [17:0] SW_edge_det;
