@@ -8,22 +8,24 @@ module MultiLedRandomiser_tb;
 
     // Outputs from the DUT
     wire [17:0]ledr; // 18 bit output for all the LED's
+
+    logic level;
 	 
 	integer led_on_count = 0;
 	integer total_cycles = 100; // Number of cycles to test
     integer num_led = 18;
 
     // Instantiate the rng module with specific parameters
-    MultiLedRandomiser #(
-        .PROBABILITY(10)
-    ) dut (
+    MultiLedRandomiser dut (
         .enable(enable),
         .clk(clk),
-        .ledr(ledr));
+        .ledr(ledr),
+        .level(level));
 
     // Clock generation
     initial begin
         clk = 0;
+        level = 0;
         forever #10 clk = ~clk;  // 20ns clock period (50 MHz)
     end
 
@@ -72,7 +74,27 @@ module MultiLedRandomiser_tb;
             end : count_led_on
 
             $display("Number of LED on %d", led_on_count);
-				$display("Current value stored in LED %b", ledr);
+			$display("Current value stored in LED %b", ledr);
+	
+        end: looping_section
+
+        $display("Changing to next level");
+
+        for (int i = 0; i < total_cycles; i++) begin: looping_section
+            enable = ~enable;
+            #20; // Wait for one clock cycle
+
+            led_on_count = 0;
+            for (int j = 0; j < num_led; j++) begin: count_led_on
+
+                if (enable && ledr[i]) begin
+                    led_on_count++;
+                end
+
+            end : count_led_on
+
+            $display("Number of LED on %d", led_on_count);
+			$display("Current value stored in LED %b", ledr);
 	
         end: looping_section
 

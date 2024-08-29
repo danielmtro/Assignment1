@@ -78,7 +78,8 @@ module randomised_mole_spawning_integration_test #(
     MultiLedRandomiser led_generator(
         .clk(CLOCK2_50),
         .enable(led_enable),
-        .ledr(LEDR)
+        .ledr(LEDR),
+        .level(level)
     );
 	
 	// Module for displaying the timer for debugging

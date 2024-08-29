@@ -5,6 +5,7 @@ module LED_randomiser_tb;
     // Inputs to the DUT (Device Under Test)
     reg clk;
     reg  enable; 
+    reg [6:0]probability;
 
     // Outputs from the DUT
     wire led; // 1 bit output 
@@ -15,15 +16,17 @@ module LED_randomiser_tb;
 
     // Instantiate the rng module with specific parameters
     LED_randomiser #(
-        .PROBABILITY(10)
+        .SEED(1)
     ) dut (
         .enable(enable),
         .clk(clk),
-        .led(led));
+        .led(led),
+        .probability(probability));
 
     // Clock generation
     initial begin
         clk = 0;
+        probability = 10;
         forever #10 clk = ~clk;  // 20ns clock period (50 MHz)
     end
 

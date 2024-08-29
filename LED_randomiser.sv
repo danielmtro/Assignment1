@@ -1,9 +1,9 @@
 module LED_randomiser#(
-    parameter PROBABILITY=10,
     parameter SEED=1
 )(
     input           		  enable,
     input                     clk,
+    input                [6:0]probability,
     output logic              led
 );
     /*
@@ -32,7 +32,7 @@ module LED_randomiser#(
 
             // Only update if the LED change has occured
             if (LED_Change) begin
-                led <= (random_value%10 == 0) ? 1'b1 : 1'b0;
+                led <= (random_value%probability == 0) ? 1'b1 : 1'b0;
             end
 
         end
