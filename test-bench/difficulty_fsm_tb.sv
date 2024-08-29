@@ -18,6 +18,7 @@ module difficulty_fsm_tb;
     // Clock generation
     initial begin
         clk = 0;
+		  increment = 0;
         level = 2'b00;
         forever #10 clk = ~clk;  // 20ns clock period (50 MHz)
     end

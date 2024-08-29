@@ -22,7 +22,7 @@ module top_level #(
 	logic [$clog2(MAX_MS)-1:0] random_value;
 
     // Difficulty level variables
-    logic [1:0] increment, level;
+    logic [1:0] increment, level, level_button_pressed;
 	logic [6:0] segment_level;
 
     // switches for mole hitting variables
@@ -64,6 +64,8 @@ module top_level #(
                  .button(KEY[0]),
                  .button_pressed(restart));
 
+    // connect the increment signal to a posedge detection
+    posedge_detection posedge (.clk(Clock), .button(increment), .button_pressed(level_button_pressed));
 
 	// Difficulty fsm module
 	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
