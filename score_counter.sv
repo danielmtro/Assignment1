@@ -1,12 +1,11 @@
 module score_counter #(
     parameter MAX_SCORE = 9999
 )(
-    input                           clk,
-    input                           restart,
-    input                           increase_score,
-    output      [$clog2(MAX_SCORE)-1:0]score
+    input                               clk,
+    input                               restart,
+    input                               increase_score,
+    output reg [$clog2(MAX_SCORE)-1:0]  score
 );
-    initial score = 0; // initalise score as 0 to avoid any errors during runtime
     /*
     Module takes in 2 inputs
     
@@ -21,7 +20,7 @@ module score_counter #(
     // always ff block updates the score every clock cycle if we hit a mole
     always_ff @(posedge clk) begin
 
-        if(restart) begin
+        if(restart || score > MAX_SCORE - 1) begin
             score <= 0;     // set the score to zero if a restart is triggered or max score is reached
         end
         else if(increase_score) begin
