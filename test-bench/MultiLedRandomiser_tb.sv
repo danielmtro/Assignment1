@@ -12,7 +12,7 @@ module MultiLedRandomiser_tb;
     logic level;
 	 
 	integer led_on_count = 0;
-	integer total_cycles = 100; // Number of cycles to test
+	integer total_cycles = 20; // Number of cycles to test
     integer num_led = 18;
 
     // Instantiate the rng module with specific parameters
@@ -67,19 +67,27 @@ module MultiLedRandomiser_tb;
             led_on_count = 0;
             for (int j = 0; j < num_led; j++) begin: count_led_on
 
-                if (enable && ledr[i]) begin
-                    led_on_count++;
+                if (enable && ledr[j]) begin
+                    led_on_count = led_on_count + 1;
                 end
 
             end : count_led_on
 
-            $display("Number of LED on %d", led_on_count);
-			$display("Current value stored in LED %b", ledr);
+			if(enable) begin
+				$display("Number of LED on %d", led_on_count);
+				$display("Current value stored in LED %b", ledr);
+			end
 	
         end: looping_section
 
+		  
         $display("Changing to next level");
+		  $display("Changing to next level");
+		  $display("Changing to next level");
+		  $display("Changing to next level");
+		  $display("Changing to next level");
 
+		  level = 3;
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
@@ -87,14 +95,16 @@ module MultiLedRandomiser_tb;
             led_on_count = 0;
             for (int j = 0; j < num_led; j++) begin: count_led_on
 
-                if (enable && ledr[i]) begin
+                if (enable && ledr[j]) begin
                     led_on_count++;
                 end
 
             end : count_led_on
-
-            $display("Number of LED on %d", led_on_count);
-			$display("Current value stored in LED %b", ledr);
+			
+			if(enable) begin
+				$display("Number of LED on %d", led_on_count);
+				$display("Current value stored in LED %b", ledr);
+			end
 	
         end: looping_section
 

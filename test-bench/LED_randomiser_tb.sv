@@ -26,7 +26,7 @@ module LED_randomiser_tb;
     // Clock generation
     initial begin
         clk = 0;
-        probability = 10;
+        probability = 15;
         forever #10 clk = ~clk;  // 20ns clock period (50 MHz)
     end
 
@@ -59,7 +59,8 @@ module LED_randomiser_tb;
 
         // Test case: Toggle enable and observe LEDR
 
-
+			
+		  $display("Beginning automated tests");
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
@@ -72,9 +73,32 @@ module LED_randomiser_tb;
         // Calculate the percentage of time LEDR is on when enable is high
         led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
+		  
+		  $display("Changing probability");
+		  $display("Changing probability");
+		  $display("Changing probability");
+		  $display("Changing probability");
+			
+		  probability = 3;
+		  $display("Beginning automated tests");
+        for (int i = 0; i < total_cycles; i++) begin: looping_section
+            enable = ~enable;
+            #20; // Wait for one clock cycle
+
+            if (enable && led) begin
+                led_on_count++;
+            end
+        end: looping_section
+
+        // Calculate the percentage of time LEDR is on when enable is high
+        led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
+        $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
+		  
+		  
+		  
 
         // Run the simulation for a specified time
-        #1000 $finish();
+        #10 $finish();
     end
 
 endmodule
