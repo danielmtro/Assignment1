@@ -24,10 +24,8 @@ module game_logic(
 	 logic [17:0] ledr_current;
 	 logic [17:0] ledr_next;
 	 logic [17:0] previous_input;
-<<<<<<< Updated upstream
     // initial previous_input = 0;
-=======
->>>>>>> Stashed changes
+
 	 
 	 always_ff @(posedge clk) begin
 		previous_input <= input_num;
