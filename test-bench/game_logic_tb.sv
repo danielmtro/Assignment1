@@ -4,8 +4,9 @@ module game_logic_tb;
     // Step 1: Define test bench variables and clock:
     // reg      seed;
     reg    [17:0]  SW_pressed;
-    reg    [17:0]  ledr; // Inputs as register data type (so we can assign them in the initial block)
-    logic     point_1; // Outputs as wire data type (as they are assigned by the DUT)
+    reg    [17:0]  ledr; // display value on LEDs
+    logic     point_1; // whether player should receive a point
+	 logic [17:0] input_num; //the input number given by the rng generator
 
     reg clk;  // Clock signal for sequential logic
 	logic [17:0] mole_hit_test;
@@ -13,9 +14,9 @@ module game_logic_tb;
     game_logic DUT(
 			.clk(clk),// Instantiate the 'Device Under Test' (DUT), an instanceof the game_logic module.
         .SW_pressed(SW_pressed), 
-		  .ledr(ledr), // Connect inputs to their respective testbench variables.
+		  .ledr_real(ledr), // Connect inputs to their respective testbench variables.
         .point_1(point_1),
-			.mole_hit(mole_hit_test)// Connect outputs to their respective testbench variables.
+			.input_num(input_num)// Connect outputs to their respective testbench variables.
     );
     // ^^^ Connects ports of the instantiated module to variables in this module with the same port/variable name.
 
@@ -28,6 +29,7 @@ module game_logic_tb;
 	initial begin
 		ledr = 18'b000000000000000000;
 		SW_pressed = 18'b000000000000000000;
+		input_num = 0;
 	end	
 
     // Step 4: Initial block to specify input values starting from time = 0. Tospecify inputs for time > 0, use the delay operator `#`.
@@ -38,51 +40,52 @@ module game_logic_tb;
         //test case 1: ledr is 00000000000100000 and the user pushes the correct button
 		  //this triggers a point to be won. 
 
-		 
+		 $display("STARTING SIMULATION");
         #60;
-        ledr = 18'b00000000000100000; 			//an LED turns on
+        input_num = 18'b00000000000100000; 			//an LED turns on
 		  #60;
-        SW_pressed = 18'b000000000000000000; //the user is yet to react 
+        SW_pressed = 18'b000000000000000000; 		//the user is yet to react 
         #20; 
-        SW_pressed  = 18'b00000000000100000; //the user whacks the correct mole
+        SW_pressed  = 18'b00000000000100000; 		//the user whacks the correct mole
 		  #40;
-		  ledr = 18'b000000000000000000; 		//the active LED turns off
+//		  input_num = 18'b000000000000000000; 		//the active LED turns off
 		  //end of test case 1
 		  
 		  #30 //viewing time
 		  SW_pressed = 18'b000000000000000000; //switches reset to all off 
 			#30
+			
 			//test case 2. The user presses the incorrect button. There is still only 1 led on
 		
-			ledr = 18'b0000000000100000; 			//an LED turns on
+			input_num = 18'b0000000000100000; 			//an LED turns on
 			#20;
 			SW_pressed = 18'b00010000000000000; //the user hits the incorrect mole
 			#40; 											//viewing time
 			//end test case 2
 			
-			ledr = 18'b0000000000000000;			//reset LEDs to off
+			input_num = 18'b0000000000000000;			//reset LEDs to off
 			SW_pressed = 18'b0000000000000000;	//reset switches to off
 			
 			#40;											//changing LED's happened too close to 
 			
 			//test case 3.1: there are several LEDs on and the user interacts with 1 of them 
 			//correctly
-			ledr = 18'b0010001000100000; 			//more leds turn on
+			input_num = 18'b0010001000100000; 			//more leds turn on
 			#20;
 			SW_pressed = 18'b0000000000100000; 	//user whacks 1 mole
 			#40;
-			ledr = 18'b0010001000000000;			//mole which was hit is killed. LED turns off
-			#30;											//viewing time
+//			ledr = 18'b0010001000000000;			//mole which was hit is killed. LED turns off
+//			#30;											//viewing time
 			//end test case 3.1
 			
 			//test case 3.2: the user then interacts with the second led correctly
 			
 			SW_pressed = 18'b0010000000100000; 	//user hits a second mole
 			#40;
-			ledr  = 18'b0000001000000000; 		//mole dies, LED turns off
+//			ledr  = 18'b0000001000000000; 		//mole dies, LED turns off
 			#30;											//viewing time
 
-        
+        $display("FINISHING SIMULATION");
 
         $finish(); // Important: must end simulation (or it will go on forever!)
     end

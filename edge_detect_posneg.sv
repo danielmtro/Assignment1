@@ -20,12 +20,16 @@ module edge_detect_posneg #(
 );
     logic[NUM_BITS - 1:0] button_current;
     logic [NUM_BITS - 1:0] button_prev;
-
 	 
-    always_ff @(posedge clk) begin : edge_detect
+//	initial begin
+//		SW_pressed = 0;
+//		SW_edge_det = 0;
+//	end
+	 
+    always_ff @(posedge clk) begin : edge_detect_posneg
         button_current <= SW_pressed;
         button_prev <= button_current;        
-    end : edge_detect
+    end : edge_detect_posneg
     
     assign SW_edge_det = (button_prev ^ button_current);
 

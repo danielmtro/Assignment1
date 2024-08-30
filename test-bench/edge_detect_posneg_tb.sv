@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module edge_detect_tb;
+module edge_detect_posneg_tb;
     // Step 1: Define test bench variables and clock:
  
 	 reg [17:0] SW_pressed;
@@ -8,7 +8,7 @@ module edge_detect_tb;
     reg clk;  // Clock signal for sequential logic
 
     // Step 2: Instantiate Device Under Test:
-    edge_detect #(.NUM_BITS(18)) DUT (
+    edge_detect #(.NUM_BITS(18)) dut (
 							.clk(clk),
 							.SW_pressed(SW_pressed),
 							.SW_edge_det(SW_edge_det)
@@ -42,6 +42,7 @@ module edge_detect_tb;
 			#20;
 			SW_pressed = 18'b000001000000100000;
 			$display("edge detection value is: %b", SW_edge_det);
+			#40
 
 
 
