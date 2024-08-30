@@ -14,9 +14,9 @@ module score_counter_tb;
     wire [$clog2(MAX_SCORE)-1:0] score;
 
     // Instantiate the score_counter module
-    score_counter #(MAX_SCORE) uut (
+    score_counter #(MAX_SCORE) dut (
         .clk(clk),
-        .restart(restart),
+        .reset(restart),
         .mole_hit(mole_hit),
         .score(score)
     );
@@ -29,7 +29,10 @@ module score_counter_tb;
 
     // Test procedure
     initial begin
+        $dumpfile("tb.vcd");  // Create a waveform file
+        $dumpvars();
         // Initialize inputs
+        
         restart = 0;
         mole_hit = 0;
 
@@ -48,7 +51,7 @@ module score_counter_tb;
             mole_hit = 1;
             #20;
             mole_hit = 0;
-
+            $display("Score: %d", score);
             // Check if score wraps around after reaching MAX_SCORE
             if (score == 0 && restart == 0 && $time > (MAX_SCORE * 20)) begin
                 $display("Test passed: Score reset after reaching MAX_SCORE");
