@@ -8,7 +8,7 @@ module edge_detect_posneg_tb;
     reg clk;  // Clock signal for sequential logic
 
     // Step 2: Instantiate Device Under Test:
-    edge_detect #(.NUM_BITS(18)) dut (
+    edge_detect_posneg #(.NUM_BITS(18)) dut (
 							.clk(clk),
 							.SW_pressed(SW_pressed),
 							.SW_edge_det(SW_edge_det)
