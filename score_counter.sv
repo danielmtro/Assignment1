@@ -21,7 +21,7 @@ module score_counter #(
     always_ff @(posedge clk) begin
 
         if(restart) begin
-            score <= 0;     // set the score to zero if a restart is triggered or max score is reached
+            score <= 0;     // set the score to zero if a restart is triggered
         end
         else if(increase_score) begin
             score <= score + 1;  // increment the score

@@ -3,7 +3,7 @@
 module score_counter_tb;
 
     // Parameter
-    parameter MAX_SCORE = 9999;
+    parameter MAX_SCORE = 2047;
 
     // Inputs
     reg clk;
