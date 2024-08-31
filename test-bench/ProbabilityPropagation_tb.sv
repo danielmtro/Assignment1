@@ -1,29 +1,27 @@
 `timescale 1ns/1ps
 
-module MultiLedRandomiser_tb;
+module ProbabilityPropagation_tb;
 
     // Inputs to the DUT (Device Under Test)
     reg clk;
     reg  enable; 
 
     // Outputs from the DUT
-    wire [17:0]ledr; // 18 bit output for all the LED's
+    wire ledr; // 1 bit output for the LED
 
-    logic [1:0]level;
-   
+   logic level;
+	 
 	real led_on_percentage;
-	real led_x_on = 0;
-
 	integer led_on_count = 0;
-	integer total_cycles = 20; // Number of cycles to test
-	integer self_cycles = 1000;
-    integer num_led = 18;
+   integer num_led = 18;
 
+	integer total_cycles = 1000; // Number of cycles to test
+	
     // Instantiate the rng module with specific parameters
-    MultiLedRandomiser dut (
+    ProbabilityPropagation dut (
         .enable(enable),
         .clk(clk),
-        .ledr(ledr),
+        .led(ledr),
         .level(level));
 
     // Clock generation
@@ -64,42 +62,20 @@ module MultiLedRandomiser_tb;
         #10;
         $display("Beginning automated tests");
     
+		  $display("Beginning automated tests");
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
 
-            led_on_count = 0;
-            for (int j = 0; j < num_led; j++) begin: count_led_on
-
-                if (enable && ledr[j]) begin
-                    led_on_count = led_on_count + 1;
-                end
-
-            end : count_led_on
-
-			if(enable) begin
-				$display("Number of LED on %d", led_on_count);
-				$display("Current value stored in LED %b", ledr);
-			end
-	
-        end: looping_section
-		  
-		  
-		  // Check the probability when looping through 
-        for (int i = 0; i < self_cycles; i++) begin: next_looping_section
-            enable = ~enable;
-            #20; // Wait for one clock cycle
-
-            if (enable && ledr[0]) begin
-                led_x_on++;
+            if (enable && ledr) begin
+                led_on_count++;
             end
-        end: next_looping_section
+        end: looping_section
 
         // Calculate the percentage of time LEDR is on when enable is high
-        led_on_percentage = (led_x_on / (self_cycles / 2.0)) * 100.0;
+        led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
 	
-
 
 		  
         $display("Changing to next level");
@@ -109,44 +85,21 @@ module MultiLedRandomiser_tb;
 		  $display("Changing to next level");
 
 		  level = 3;
-		  led_x_on = 0;
+
+		  
+		  $display("Beginning automated tests");
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
 
-            led_on_count = 0;
-            for (int j = 0; j < num_led; j++) begin: count_led_on
-
-                if (enable && ledr[j]) begin
-                    led_on_count++;
-                end
-
-            end : count_led_on
-			
-			if(enable) begin
-				$display("Number of LED on %d", led_on_count);
-				$display("Current value stored in LED %b", ledr);
-			end
-	
-        end: looping_section
-		  
-		  
-		  
-		  // Check the probability when looping through 
-        for (int i = 0; i < self_cycles; i++) begin: next_looping_section2
-            enable = ~enable;
-            #20; // Wait for one clock cycle
-
-            if (enable && ledr[0]) begin
-                led_x_on++;
+            if (enable && ledr) begin
+                led_on_count++;
             end
-        end: next_looping_section2
+        end: looping_section
 
         // Calculate the percentage of time LEDR is on when enable is high
-        led_on_percentage = (led_x_on / (self_cycles / 2.0)) * 100.0;
+        led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
-	
-
 
 
         // Run the simulation for a specified time

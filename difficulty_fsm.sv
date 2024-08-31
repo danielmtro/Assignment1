@@ -7,7 +7,13 @@ module difficulty_fsm(
 //    intial level = 2'b00;
 
     // State teypedef enum used here
-    typedef enum logic [1:0] {LVL1, LVL2, LVL3, LVL4} state_type;
+	 // Note that we specify the exact encoding that we want to use for each state
+    typedef enum logic [1:0] {
+        LVL1 = 2'b00,
+        LVL2 = 2'b01,
+        LVL3 = 2'b10,
+        LVL4 = 2'b11
+    } state_type;
     state_type current_state = LVL1, next_state;
 
     // always_comb block for next state logic

@@ -1,7 +1,7 @@
 module LED_randomiser#(
     parameter SEED=1
 )(
-    input           		  enable,
+    input           		  		enable,
     input                     clk,
     input                [6:0]probability,
     output logic              led
