@@ -2,7 +2,7 @@
 
 module timer_tb;
 
-    reg         clk, reset, up, enable;   // Need to use `reg` here (set in always block).
+    reg  clk, reset, up, enable;   // Need to use `reg` here (set in always block).
     reg  [10:0] start_value;
     wire [10:0] timer_value;
 
@@ -49,17 +49,17 @@ module timer_tb;
             $display("t=%0d ns: timer_value=%0d", $time, timer_value);  // $time gets current simulation time.
             #1000000; // Wait 1 millisecond (1000000 ns)
         end
-        if (timer_value != 3) $warning("t=%0d ns: timer_value=%0d, but expected 3!",$time, timer_value);
+        if (timer_value != 2045) $warning("t=%0d ns: timer_value=%0d, but expected 2045!",$time, timer_value);
 
         #500000; // Wait 0.5 milliseconds (500000 ns)
 
-        /** Test counting down from 7 ms to 5 ms **/
+        /** Test counting up from 7 ms to 9 ms **/
         start_value = 7;
         up          = 1'b0;
-        reset       = 1'b1; // Reset counter to count down from starting value 7.
+        reset       = 1'b1; // Reset counter to count up from starting value 7.
 
         #20;                // Wait 1 clock period to *clock* new values before deasserting `reset` (i.e. a reset pulse).
-        reset       = 1'b0; // Disable reset to start counting down from 7:
+        reset       = 1'b0; // Disable reset to start counting up from 7:
         if (timer_value != 7) $warning("t=%0d ns: timer_value=%0d, but expected 7!",$time, timer_value);
 
         #20;                // Wait a clock period to get the new timer_value value after deasserting `reset`.
@@ -68,9 +68,9 @@ module timer_tb;
         $display("t=%0d ns: timer_value=%0d",$time, timer_value);  // $time gets current simulation time.
         repeat(2) begin
             #1000000; // Wait 1 millisecond
-            $display("t=%0d ns: timer_value=%0d",$time, timer_value); // Timer should count down from 7 ms to 5 ms.
+            $display("t=%0d ns: timer_value=%0d",$time, timer_value); // Timer should count up from 7 ms to 9 ms.
         end
-        if (timer_value != 5) $warning("t=%0d ns: timer_value=%0d, but expected 5!",$time, timer_value);
+        if (timer_value != 9) $warning("t=%0d ns: timer_value=%0d, but expected 9!",$time, timer_value);
 
         /** Test pausing the timer for 2 ms **/
         enable = 1'b0;      // Disable the timer module, i.e. pause the timer.
@@ -78,14 +78,14 @@ module timer_tb;
         #2000000;  // Wait 2 milliseconds (2000000 ns)
 
         $display("t=%0d ns: timer_value=%0d", $time, timer_value); // Timer should have remained on previous value = 5 ms
-        if (timer_value != 5) $warning("t=%0d ns: timer_value=%0d, but expected 5!",$time, timer_value);
+        if (timer_value != 9) $warning("t=%0d ns: timer_value=%0d, but expected 9!",$time, timer_value);
         
         enable = 1'b1;      // Enable the timer module, i.e. resume the timer.
 
         #1500000;  // Wait 1.5 milliseconds (1500000 ns).
 
-        $display("t=%0d ns: timer_value=%0d", $time, timer_value); // Timer should resume counting down from 5 ms to 4 ms
-        if (timer_value != 4) $warning("t=%0d ns: timer_value=%0d, but expected 4!",$time, timer_value);
+        $display("t=%0d ns: timer_value=%0d", $time, timer_value); // Timer should resume counting up from 9 ms to 10 ms
+        if (timer_value != 10) $warning("t=%0d ns: timer_value=%0d, but expected 10!",$time, timer_value);
 
         $finish();  // Finish the simulation.
     end

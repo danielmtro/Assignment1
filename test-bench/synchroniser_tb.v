@@ -2,11 +2,11 @@
 
 module synchroniser_tb;
 
-    // Inputs to the DUT (Device Under Test)
+    // Inputs
     reg clk;
     reg x;
 
-    // Outputs from the DUT
+    // Outputs
     wire y;
 
     // Instantiate the synchroniser module
