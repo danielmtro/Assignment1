@@ -22,8 +22,9 @@ module top_level #(
 	logic [$clog2(MAX_MS)-1:0] random_value;
 
     // Difficulty level variables
-    logic [1:0] increment, level, level_pressed;
-	logic [6:0] segment_level;
+    logic [1:0] increment, level;
+	 logic level_pressed;
+	 logic [6:0] segment_level;
 
     // switches for mole hitting variables
     logic [17:0] switches;
@@ -104,7 +105,8 @@ module top_level #(
     // module for generating random leds
     MultiLedRandomiser led_randomiser (.clk(CLOCK2_50),
                                        .enable(activate_mole),
-                                       .ledr(input_num));
+                                       .ledr(input_num),
+													.level(level));
 	
 						
 	// Module for dislaying the level
