@@ -53,6 +53,7 @@ module game_logic_tb;
 		  
 		  #30 //viewing time
 		  SW_pressed = 18'b000000000000000000; //switches reset to all off 
+		  input_num = 0;
 			#30
 			
 			//test case 2. The user presses the incorrect button. There is still only 1 led on
