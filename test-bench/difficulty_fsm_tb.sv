@@ -12,7 +12,7 @@ module difficulty_fsm_tb;
     // Instantiate the rng module with specific parameters
     difficulty_fsm dut (
         .clk(clk),
-        .increment(increment),
+        .button_edge(increment),
         .level(level));
 
     // Clock generation
@@ -31,42 +31,42 @@ module difficulty_fsm_tb;
 
         #10;
         // Check what the level is 
-        $display("The starting level is %d", level);
+        $display("The starting level should be 0. It is %d", level);
 
         // increase the level 
-        #30;
+        #10;
         increment = 1;
-        $display("Level: %d", level);
+        $display("Level has been incremented to 1. It is %d", level);
 
-        #30;
-        $display("Level should still be %d", level);
+        #10;
+        $display("Level should still be 1. It is %d", level);
 
-        #30;
+        #10;
         increment = 0;
-        #30;
-        $display("Level should still be %d", level);
+        #10;
+        $display("Level should still be 1. It is %d", level);
 
-        #30;
+        #10;
         increment = 1;
-        #30;
-        $display("Level should now be %d", level);
-        #30;
+        #10;
+        $display("Level should be 2. It is %d", level);
+		  
 
-        #30;
+        #10;
         increment = 0;
-        #30;
+        #10;
         increment = 1;
-        #30;
-        $display("Level should now be %d", level);
+        #10;
+        $display("Level should be 3. It is %d", level);
         increment = 0;
-        #30;
+        #10;
         increment = 1;
-        #30;
-        $display("Level should now be %d", level);
+        #10;
+        $display("Level should be 0. It is %d", level);
         increment = 0;
-        #30;
+        #10;
         increment = 1;
-        $display("Level should now be %d", level);
+        $display("Level should be 1. It is %d", level);
 
         // Run the simulation for a specified time
         #10 $finish();

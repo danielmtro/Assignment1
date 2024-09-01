@@ -15,7 +15,7 @@ module MultiLedRandomiser_tb;
 	real led_x_on = 0;
 
 	integer led_on_count = 0;
-	integer total_cycles = 20; // Number of cycles to test
+	integer total_cycles = 10; // Number of cycles to test
 	integer self_cycles = 1000;
     integer num_led = 18;
 
@@ -63,6 +63,9 @@ module MultiLedRandomiser_tb;
         // Test case: Toggle enable and observe LEDR
         #10;
         $display("Beginning automated tests");
+		  
+		  
+		  $display("Starting at level 1");
     
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
@@ -96,17 +99,15 @@ module MultiLedRandomiser_tb;
         end: next_looping_section
 
         // Calculate the percentage of time LEDR is on when enable is high
+		  
+		  $display("We expect a probability of 6.6 per cent here");
         led_on_percentage = (led_x_on / (self_cycles / 2.0)) * 100.0;
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
 	
 
 
 		  
-        $display("Changing to next level");
-		  $display("Changing to next level");
-		  $display("Changing to next level");
-		  $display("Changing to next level");
-		  $display("Changing to next level");
+        $display("Changing to level 3");
 
 		  level = 3;
 		  led_x_on = 0;
@@ -144,6 +145,8 @@ module MultiLedRandomiser_tb;
 
         // Calculate the percentage of time LEDR is on when enable is high
         led_on_percentage = (led_x_on / (self_cycles / 2.0)) * 100.0;
+		  
+		  $display("We expect a probability of 33 per cent here");
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
 	
 

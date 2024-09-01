@@ -41,6 +41,8 @@ module rng_mole_tb;
 		  
 		  // Generate a bunch of random values for level 0 test case
         level = 0;
+		  
+//		  $display("Should be in the bounds 900 - 2347");
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
@@ -54,41 +56,14 @@ module rng_mole_tb;
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
+
+		  
 		  
 		  
 		  // Level 1 testing
         #100;
         level = 1;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
+//		  $display("Should be in the bounds 600 - 1323");
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
@@ -109,6 +84,7 @@ module rng_mole_tb;
 		  // Level 2 Testing
         #100;
         level = 2;
+//		  $display("Should be in the bounds 450 - 811");
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
@@ -124,25 +100,13 @@ module rng_mole_tb;
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
+
 		  
 		  
 		  // Level 3 Testing
         #100
         level = 3;
+//		  $display("Should be in the bounds 375 - 555");
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
@@ -156,24 +120,7 @@ module rng_mole_tb;
 		  $display("%0d\t %d %d", $time, level, random_value);
 		  #20;
 		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
-		  #20;
-		  $display("%0d\t %d %d", $time, level, random_value);
+
 		  
 
         // Display header

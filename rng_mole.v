@@ -51,10 +51,10 @@ module rng_mole #(
 
         case(level)
 
-            2'b00 : temp_value <= init;                 // (300, 1223)
-            2'b01 : temp_value <= {1'b0, init[9:1]};    // (250, 711)
-            2'b10 : temp_value <= {2'b00, init[9:2]};   // (175, 405)
-            2'b11 : temp_value <= {3'b000, init[9:3]};  // (137, 252)
+            2'b00 : temp_value <= init;                 // (900, 2347)
+            2'b01 : temp_value <= {1'b0, init[9:1]};    // (600, 1323)
+            2'b10 : temp_value <= {2'b00, init[9:2]};   // (450, 811)
+            2'b11 : temp_value <= {3'b000, init[9:3]};  // (375, 555)
             default: temp_value <= init;
         endcase
 	 end

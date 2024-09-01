@@ -60,7 +60,8 @@ module LED_randomiser_tb;
         // Test case: Toggle enable and observe LEDR
 
 			
-		  $display("Beginning automated tests");
+		  $display("Beginning automated tests. Current p is 15");
+		  $display("Expected probability is 6.66");
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
@@ -74,13 +75,11 @@ module LED_randomiser_tb;
         led_on_percentage = (led_on_count / (total_cycles / 2.0)) * 100.0;
         $display("LEDR was on %.2f%% of the time when enable was high", led_on_percentage);
 		  
-		  $display("Changing probability");
-		  $display("Changing probability");
-		  $display("Changing probability");
-		  $display("Changing probability");
+		  $display("---------------");
+		  $display("Changing p to 3");
+		  $display("Expected probability is 30");
 			
 		  probability = 3;
-		  $display("Beginning automated tests");
         for (int i = 0; i < total_cycles; i++) begin: looping_section
             enable = ~enable;
             #20; // Wait for one clock cycle
