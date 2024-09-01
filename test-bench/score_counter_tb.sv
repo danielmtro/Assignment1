@@ -55,15 +55,19 @@ module score_counter_tb;
             
         end
 
-        // Test manual restart during operation
-        restart = 1;
-        #20;
-        restart = 0;
-        
-        if (score !== 0) $display("Test failed: Restart did not set score to 0 after being pressed during counting");
-        else $display("Test passed: Restart reset the score to 0");
-        $display("Score: %d", score);
-
+        if (score == 30) begin
+            // Test manual restart during operation
+            restart = 1;
+            #20;
+            restart = 0;
+            
+            if (score !== 0) $display("Test failed: Restart did not set score to 0 after being pressed during counting");
+            else $display("Test passed: Restart reset the score to 0");
+            $display("Score: %d", score);
+        end
+        else begin
+            $display("Score was not incremented and counter does not work");
+        end
         // Finish simulation
         $finish();
     end
