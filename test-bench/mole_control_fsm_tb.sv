@@ -4,12 +4,12 @@ module mole_control_fsm_tb;
 
     // Inputs to the DUT (Device Under Test)
     reg clk;
-    reg [1:0] timer_value;
-    reg [1:0] reset, up, enable, led_on; 
+    reg [10:0] timer_value;
+    reg reset, up, enable, led_on; 
 
 
     // Instantiate the rng module with specific parameters
-    difficulty_fsm dut (
+    mole_control_fsm dut (
         .clk(clk),
         .timer_value(timer_value),
         .reset(reset),
@@ -20,7 +20,7 @@ module mole_control_fsm_tb;
     // Clock generation
     initial begin
         clk = 0;
-		timer_value = 1;
+		  timer_value = 2046;
         reset = 1;
         up = 0;
         enable = 0;
@@ -51,7 +51,7 @@ module mole_control_fsm_tb;
         $display("State are reset: %d, up: %d, enable: %d, led_on: %d", reset, up, enable, led_on);
         $display("Should be reset: 1, up: 0, enable: 1, led_on: 0", reset, up, enable, led_on);        
         $display("Timer value is: %d", timer_value);
-        timer_value = 1;
+        timer_value = 2046;
 
         // Check Reset 1 state
         #40;

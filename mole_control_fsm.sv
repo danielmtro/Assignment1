@@ -12,8 +12,8 @@ module mole_control_fsm #(
 
     // State teypedef enum used here
     typedef enum logic [1:0] {RESET_0, LED_OFF, RESET_1, LED_ON} state_type;
-    state_type current_state, next_state;
-
+    (* syn_encoding = "one-hot" *) state_type current_state, next_state;
+	 
     // always_comb block for next state logic
     always_comb begin
         next_state = current_state;
