@@ -41,8 +41,14 @@ module edge_detect_posneg_tb;
 			$display("edge detection value is: %b", SW_edge_det);
 			#20;
 			SW_pressed = 18'b000001000000100000;
+			#20;
+			$display("edge detection value is: %b", SW_edge_det);
+			#20
+			SW_pressed = 18'b000001000000000000;
+			#20;
 			$display("edge detection value is: %b", SW_edge_det);
 			#40
+			$display("edge detection value is: %b", SW_edge_det);
 
 
 
