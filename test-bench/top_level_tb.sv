@@ -1,116 +1,147 @@
-`timescale 1ns/1ps
+module top_level #(
+	parameter MAX_MS=2047
+)(
+	input 	CLOCK2_50,
+	input	[3:0]  KEY,
+   input   [17:0] SW,
+	output	[17:0] LEDR,
+	output 	[6:0]  HEX0,
+	output 	[6:0]  HEX1,
+	output 	[6:0]  HEX2,
+	output 	[6:0]  HEX3,
+	output	[6:0]  HEX4
+);
 
-module top_level_tb;
-    // Inputs to the DUT (Device Under Test)
-    reg CLOCK2_50;
-    reg [3:0] KEY;
-    reg [17:0] SW;
 
-    // Outputs from the DUT
-    wire [17:0] LEDR;
-    wire [6:0] HEX0, HEX1, HEX2, HEX3, HEX4;
+    // This is a test script for seeing if moles can be spawned on the FPGA
 
-    // Instantiate the top-level module
-    top_level #(
-        .MAX_MS(2047)
-    ) dut (
-        .CLOCK2_50(CLOCK2_50),
-        .KEY(KEY),
-        .SW(SW),
-        .LEDR(LEDR),
-        .HEX0(HEX0),
-        .HEX1(HEX1),
-        .HEX2(HEX2),
-        .HEX3(HEX3),
-        .HEX4(HEX4)
-    );
 
-    // Inputs to the MultiLedRandomiser
-    reg clk;
-    reg enable;
-    reg [1:0] level;
-    
-    // Outputs from the MultiLedRandomiser
-    wire [17:0] ledr_randomiser;
+    // Timer variables
+    logic reset, up, enable;
+	logic [$clog2(MAX_MS)-1:0] timer_value;
+	logic [$clog2(MAX_MS)-1:0] random_value;
 
-    // Instantiate the MultiLedRandomiser module
-    MultiLedRandomiser randomiser (
+    // Difficulty level variables
+    logic [1:0] increment, level;
+	 logic level_pressed;
+	 logic [6:0] segment_level;
+
+    // switches for mole hitting variables
+    logic [17:0] switches;
+
+    // variable for restarting the game
+    logic restart, restart_pressed;
+
+    // variable for determining if a mole shoud be up
+    logic activate_mole;
+
+    // variable for determining if a mole was successfully hit
+    logic increase_point;
+
+    // variable for holding the current score;
+    logic [10:0] score;
+	
+
+    //
+	// Debounce the modules
+    //
+    debounce d0 (.clk(CLOCK2_50),               // Difficulty button debouncer
+                 .button(KEY[1]),
+                 .button_pressed(increment));
+
+    // debounce all the switches
+    genvar i;
+    generate
+
+        for(i=0; i<18; i++) begin  : debounce_switches
+            debounce d_i (.clk(CLOCK2_50),
+                          .button(SW[i]),
+                          .button_pressed(switches[i]));
+        end : debounce_switches
+    endgenerate
+
+    // debounce the start/restart module
+    debounce d2 (.clk(CLOCK2_50),
+                 .button(KEY[0]),
+                 .button_pressed(restart));
+
+    // connect the start/restart signal to a posedge detection
+    posedge_detection pos1 (.clk(CLOCK2_50), .button(restart), .button_edge(restart_pressed));
+
+    // connect the increment signal to a posedge detection
+    posedge_detection pos2 (.clk(CLOCK2_50), .button(increment), .button_edge(level_pressed));
+
+	// Difficulty fsm module
+	difficulty_fsm diff_fsm ( .clk(CLOCK2_50),
+                              .button_edge(level_pressed),
+                              .level(level));
+		
+	// RNG module scaled by difficulty
+   rng_mole mole_timing (.clk(CLOCK2_50),
+                         .level(level),
+                         .random_value(random_value));
+	
+	 // Timer module
+    timer u0 (.clk(CLOCK2_50),
+              .reset(reset),
+              .up(up),
+              .start_value(random_value),
+              .enable(enable),
+              .timer_value(timer_value));
+
+	
+	 // Module for controlling the timer for mole generation
+    mole_control_fsm mole_fsm (
+        .clk(CLOCK2_50),
+        .timer_value(timer_value),
+        .reset(reset),
+        .up(up),
         .enable(enable),
-        .clk(clk),
-        .ledr(ledr_randomiser),
-        .level(level)
+        .led_on(activate_mole)
     );
 
-    // Clock generation
-    initial begin
-        CLOCK2_50 = 0;
-        clk = 0;
-        enable = 0;
-        level = 0;
-        forever #10 CLOCK2_50 = ~CLOCK2_50;  // 20ns clock period (50 MHz)
-        forever #10 clk = ~clk;  // 20ns clock period (50 MHz)
-    end
 
-    // Initial conditions and stimulus
-    initial begin
-        // Dump the waveform to a VCD file
-        $dumpfile("top_level_waveform.vcd");
-        $dumpvars();
+    logic [17:0]input_num;
+    // module for generating random leds
+    MultiLedRandomiser led_randomiser (.clk(CLOCK2_50),
+                                       .enable(activate_mole),
+                                       .ledr(input_num),
+													.level(level));
+	
+						
+	// Module for dislaying the level
+    always_comb begin
+		segment_level = {5'b00000, level};
+	end
+	seven_seg sseg (.bcd(segment_level),
+						 .segments(HEX4));
 
-        // Initialize inputs
-        KEY = 4'b1111;  // All buttons unpressed (active low)
-        SW = 18'b0;     // All switches off
+                
 
-        // Display changes
-        $monitor("Time: %0t | CLOCK2_50: %b | clk: %b | KEY: %b | SW: %b | LEDR: %b | HEX0: %b | HEX1: %b | HEX2: %b | HEX3: %b | HEX4: %b | Randomiser LEDR: %b",
-                 $time, CLOCK2_50, clk, KEY, SW, LEDR, HEX0, HEX1, HEX2, HEX3, HEX4, ledr_randomiser);
+    game_logic g_logic (
+        .clk(CLOCK2_50),
+        .SW_pressed(switches),
+        .input_num(input_num),
+        .ledr_real(LEDR),
+        .point_1(increase_point)
+    );
 
-        // Wait for initial reset propagation
-        #1000;
+    score_counter score_count (
+        .clk(CLOCK2_50),
+        .restart(restart_pressed),
+        .increase_score(increase_point),
+        .score(score)
+    );
 
-        // Simulate pressing the reset button (active low)
-        KEY[0] = 0;
-        #200;
+    display display_0 (
+        .clk(CLOCK2_50),
+        .value(score),
+        .display0(HEX0),
+        .display1(HEX1),
+        .display2(HEX2),
+        .display3(HEX3)
+    );
 
-        // Release reset
-        KEY[0] = 1;
 
-        // Ensure reset is released
-        #10000;
-
-        // Toggle enable and observe LEDR values
-        #10000;
-        enable = 1;
-        level = 2; // Change level for randomiser
-        #20000;
-        enable = 0;
-
-        // Display LED values when enable is low
-        #20;
-        $display("LEDR values when enable is low: %b", ledr_randomiser);
-
-        // Test case: Toggle enable and observe LEDR
-        #10;
-        $display("Beginning automated tests");
-
-        for (integer i = 0; i < 100; i++) begin
-            enable = ~enable;
-            #20; // Wait for one clock cycle
-
-            $display("Cycle %0d: LED values = %b", i, ledr_randomiser);
-        end
-
-        // Change level and observe
-        #10000;
-        level = 1; // Change to another level
-        #20000;
-        $display("Changing level to %0d", level);
-
-        // Continue with more tests if needed
-        #50000;
-
-        // Finish the simulation
-        $finish;
-    end
 
 endmodule
