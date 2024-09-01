@@ -22,9 +22,10 @@ module top_level #(
 	logic [$clog2(MAX_MS)-1:0] random_value;
 
     // Difficulty level variables
-    logic [1:0] increment, level;
+    logic increment;
+    logic [1:0] level;
 	 logic level_pressed;
-	 logic [6:0] segment_level;
+	 logic [3:0] segment_level;
 
     // switches for mole hitting variables
     logic [17:0] switches;
@@ -111,7 +112,7 @@ module top_level #(
 						
 	// Module for dislaying the level
     always_comb begin
-		segment_level = {5'b00000, level};
+		segment_level = {2'b00, level};
 	end
 	seven_seg sseg (.bcd(segment_level),
 						 .segments(HEX4));

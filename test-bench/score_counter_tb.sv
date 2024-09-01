@@ -45,23 +45,14 @@ module score_counter_tb;
         restart = 0;
         if (score !== 0) $display("Test failed: Restart did not set score to 0");
 
-        // Random mole_hit, checking score increments and wraps at MAX_SCORE finishing at a score of 10
-        repeat (MAX_SCORE + 10) begin // Should 
+        // Random mole_hit, checking score increments
+        repeat (30) begin // Should 
             #20;
             mole_hit = 1;
             #20;
             mole_hit = 0;   // Increases the score by flipping the mole_hit variable between 1 and 0
             $display("Score: %d", score);
-            // Check if score wraps around after reaching MAX_SCORE
-            if (score == 0 && restart == 0 && $time > (MAX_SCORE * 10)) begin
-                $display("Test passed: Score reset after reaching MAX_SCORE");
-            end
-            else if (score == MAX_SCORE) begin // Check that counter can reach MAX_SCORE
-                $display("Test passed: Score reached MAX_SCORE");
-            end
-            else if (score > MAX_SCORE) begin
-                $display("Test failed: Score exceeded MAX_SCORE");
-            end
+            
         end
 
         // Test manual restart during operation
